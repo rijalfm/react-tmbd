@@ -32,7 +32,8 @@ const reducer = (state = initialState, action) => {
 
         case actionType.DELETE_SESSION:
             localStorage.removeItem("sessionId");
-            return { ...state, sessionId: "" };
+            localStorage.removeItem("userInfo");
+            return { ...state, sessionId: "", userInfo: {} };
 
         default:
             console.log("DEFAULT");

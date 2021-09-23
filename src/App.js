@@ -4,6 +4,9 @@ import React from "react";
 import LoginForm from "./components/LoginForm/LoginForm";
 import Navbar from "./components/Navbar/Navbar";
 
+
+import CategoryList from "./components/CategoryList/CategoryList";
+
 const App = () => {
 
     return (
@@ -11,8 +14,7 @@ const App = () => {
             <Navbar login={<LoginForm />} />
             <Jumbo name="Now Playing" />
             <MovieList />
-            <Jumbo name="On Trending" />
-            {/* <LoginForm /> */}
+            <CategoryList />
         </main>
     )
 }

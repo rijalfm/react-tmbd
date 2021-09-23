@@ -19,12 +19,6 @@ const cardStyle = {
     // boxShadow: "0 10px 10px rgba(0,0,0,0.2)",
     transition: "all 0.3s ease",
     cursor: "pointer",
-    "&:hover": {
-        // transform: "translateY(-5px)",
-        "& .overview": {
-            transform: "translateY(0)",
-        },
-    },
 };
 
 const MovieRating = styled(Rating)(({ theme }) => ({
@@ -45,29 +39,10 @@ const MovieItem = (props) => {
             <Box sx={cardStyle}>
                 <img
                     style={{ width: "100%", height: "auto" }}
-                    src={baseImgURL + data.poster_path}
+                    src={data.poster_path ? baseImgURL + data.poster_path : ""}
                     alt={data.title}
                     loading="lazy"
                 />
-                <Box
-                    className="overview"
-                    sx={{
-                        display: "block",
-                        whiteSpace: "normal",
-                        transition: "all 0.3s ease",
-                        fontSize: 14,
-                        p: 1,
-                        bgcolor: "rgba(0,0,0,0.7)",
-                        color: "white",
-                        position: "absolute",
-                        bottom: 0,
-                        left: 0,
-                        transform: "translateY(100%)",
-                        width: "100%",
-                    }}
-                >
-                    {data.overview}
-                </Box>
                 <div
                     style={{
                         position: "absolute",

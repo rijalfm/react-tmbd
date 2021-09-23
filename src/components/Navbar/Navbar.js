@@ -131,7 +131,7 @@ export default function Navbar(props) {
                                 color="inherit"
                             >
                                 <AccountCircle />
-                                {userInfo.username}
+                                <Typography sx={{ml:1}}>{userInfo.username}</Typography>
                             </IconButton>
                             <Menu
                                 sx={{ mt: 6 }}

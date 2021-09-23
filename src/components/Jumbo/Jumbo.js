@@ -64,7 +64,7 @@ const Jumbo = (props) => {
             >
                 <img
                     className="heroImage"
-                    src={baseImgURL + data.backdrop_path}
+                    src={data.backdrop_path ? baseImgURL + data.backdrop_path : ""}
                     alt={data.title}
                     loading="lazy"
                 />
