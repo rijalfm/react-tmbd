@@ -1,10 +1,12 @@
 import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
+import Divider from '@mui/material/Divider';
+import Link from "@mui/material/Link";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
@@ -122,17 +124,20 @@ export default function Navbar(props) {
                     </Search>
                     {auth ? (
                         <div>
-                            <IconButton
-                                size="large"
+                            <Button
+                                variant="outlined"
+                                // size="large"
                                 aria-label="account of current user"
                                 aria-controls="menu-appbar"
                                 aria-haspopup="true"
                                 onClick={handleMenu}
                                 color="inherit"
+                                startIcon={<AccountCircle />}
+                                sx={{borderRadius:50}}
                             >
-                                <AccountCircle />
-                                <Typography sx={{ml:1}}>{userInfo.username}</Typography>
-                            </IconButton>
+                                
+                                <Typography sx={{ml:1, textTransform:"none"}}>{userInfo.username}</Typography>
+                            </Button>
                             <Menu
                                 sx={{ mt: 6 }}
                                 id="menu-appbar"
@@ -149,8 +154,16 @@ export default function Navbar(props) {
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                             >
-                                <MenuItem onClick={handleLogout}>
-                                    Logout
+                                <MenuItem sx={{pt:0,pb:0}} onClick={handleLogout}>
+                                    <Link href="/watch-list" color="inherit" underline="none">
+                                        Watchlist
+                                    </Link>
+                                </MenuItem>
+                                <Divider />
+                                <MenuItem sx={{pt:0,pb:0}} onClick={handleLogout}>
+                                    <Link underline="none" color="inherit">
+                                        Logout
+                                    </Link>
                                 </MenuItem>
                             </Menu>
                         </div>

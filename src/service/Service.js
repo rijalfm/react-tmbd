@@ -13,6 +13,7 @@ const getUserInfo = (dispatch, sessionId) => {
                     username: response.data.username,
                 },
             });
+            console.log(response.data)
         })
         .catch((error) => {
             console.error(error);
@@ -47,11 +48,12 @@ export const createSession = (dispatch, requestBody) => {
                     request_token: response.data.request_token,
                 })
                 .then((response) => {
+                    getUserInfo(dispatch, response.data.session_id);
                     dispatch({
                         type: actionType.CREATE_SESSION,
                         payload: response.data,
                     });
-                    getUserInfo(dispatch, response.data.session_id);
+                    console.log("AXIOS CREATE SESSION")
                     getToken(dispatch);
                 });
         })

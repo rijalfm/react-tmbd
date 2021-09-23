@@ -23,10 +23,12 @@ const reducer = (state = initialState, action) => {
         case actionType.CREATE_SESSION:
             const sessionId = action.payload.session_id;
             localStorage.setItem("sessionId", sessionId);
+            console.log("CREATE SESSION")
             return { ...state, sessionId };
 
         case actionType.GET_USER:
             localStorage.setItem("userInfo", JSON.stringify(action.payload));
+            console.log("GET USER INFO");
             return { ...state, userInfo: action.payload };
             
 
