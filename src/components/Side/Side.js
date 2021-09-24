@@ -4,7 +4,7 @@ const Side = (props) => {
     return (
         <div className="trailer">
             <div className="title">Trailer</div>
-            {props.data.slice(0,5).map((item, index) => {
+            {props.data.map((item, index) => {
                 return (
                     <iframe
                         style={{margin: 10}}
