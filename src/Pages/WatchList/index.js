@@ -1,18 +1,32 @@
 import React from "react";
-import { Box, Typography, Stack } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import WatchListItem from "../../components/WatchListItem/WatchListItem";
 
 const Watchlist = () => {
     const { sessionId, userInfo } = useSelector((state) => state);
     const auth = sessionId ? true : false;
     const [data, setData] = React.useState([]);
 
+    const getData = () => {
+        const watchListURL = `https://api.themoviedb.org/3/account/${userInfo.id}/watchlist/movies?api_key=059dbc00809f38f222d2896e2f25d3c3&session_id=${sessionId}&sort_by=created_at.asc&page=1`;
+
+            axios
+                .get(watchListURL)
+                .then((response) => {
+                    setData(response.data.results)
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+    }
+
     React.useEffect(() => {
         if (auth && userInfo.id) {
-            const watchListURL = `https://api.themoviedb.org/3/account/${userInfo.id}/watchlist/movies?api_key=059dbc00809f38f222d2896e2f25d3c3&session_id=${sessionId}&sort_by=created_at.asc&page=1`;
-            console.log(watchListURL);
+            getData()
         }
-    }, [auth, userInfo, sessionId]);
+    });
 
     if (!auth) {
         return (
@@ -54,6 +68,7 @@ const Watchlist = () => {
         <Box>
             <Box
                 sx={{
+                    mb: 4,
                     p: 0,
                     position: "relative",
                     width: "100%",
@@ -81,20 +96,23 @@ const Watchlist = () => {
                         transform: "translate(-50%,-50%)",
                     }}
                 >
-                    <Stack alignItems="center" direction="row" spacing={2}>
-                        {/* <Avatar sx={{ width: 56, height: 56, fontFamily: 'Bree Serif',textTransform: "uppercase"}}>{userInfo.username.charAt(0)}</Avatar> */}
-                        <Typography
-                            variant="h2"
-                            sx={{
-                                fontFamily: "Anton",
-                                color: "background.paper",
-                            }}
-                        >
-                            My Watchlist
-                        </Typography>
-                    </Stack>
+                    <Typography
+                        variant="h2"
+                        sx={{
+                            fontFamily: "Anton",
+                            color: "background.paper",
+                        }}
+                    >
+                        My Watchlist
+                    </Typography>
                 </Box>
             </Box>
+            {/* <WatchListItem /> */}
+            {data.map((item, index) => {
+                return (
+                    <WatchListItem key={index} data={item} />
+                )
+            })}
         </Box>
     );
 };

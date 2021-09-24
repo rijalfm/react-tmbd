@@ -19,9 +19,11 @@ const CategoryItem = (props) => {
                 variant="outlined"
                 size="large"
                 sx={{
-                    letterSpacing: 1,
+                    letterSpacing: 2,
                     color: "background.paper",
-                    fontFamily: "Anton",
+                    textTransform: "none",
+                    // fontFamily: "Anton",
+                    fontWeight: "200"
                 }}
                 color="warning"
                 href="#"

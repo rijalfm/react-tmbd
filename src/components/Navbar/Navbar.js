@@ -94,7 +94,7 @@ export default function Navbar(props) {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar
                 sx={{
-                    transitionProperty: "background,box-shadow,backdrop-filter",
+                    transitionProperty: "background,box-shadow",
                     transitionDuration: "0.3s",
                     transitionTimingFunction: "ease",
                     boxShadow: scrolled
@@ -154,8 +154,13 @@ export default function Navbar(props) {
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                             >
-                                <MenuItem sx={{pt:0,pb:0}} onClick={handleLogout}>
-                                    <Link href="/watch-list" color="inherit" underline="none">
+                                <MenuItem sx={{pt:0,pb:0}} onClick={handleClose}>
+                                    <Link href="/" color="inherit" underline="none">
+                                        Home
+                                    </Link>
+                                </MenuItem>
+                                <MenuItem sx={{pt:0,pb:0}} onClick={handleClose}>
+                                    <Link href="/watchlist" color="inherit" underline="none">
                                         Watchlist
                                     </Link>
                                 </MenuItem>
