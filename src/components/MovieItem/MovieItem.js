@@ -37,25 +37,27 @@ const MovieItem = (props) => {
     return (
         <div style={{ ...style }}>
             <Box sx={cardStyle}>
-                <img
-                    style={{ width: "100%", height: "auto" }}
-                    src={data.poster_path ? baseImgURL + data.poster_path : ""}
-                    alt={data.title}
-                    loading="lazy"
-                />
-                <div
-                    style={{
-                        position: "absolute",
-                        top: 15,
-                        left: 10,
-                    }}
-                >
-                    <Chip
-                        sx={{pointerEvents: "none"}}
-                        color="primary"
-                        label={new Date(data.release_date).getFullYear() || ""}
+                <Link href={`/detail/${data.id}`}>
+                    <img
+                        style={{ width: "100%", height: "auto" }}
+                        src={data.poster_path ? baseImgURL + data.poster_path : ""}
+                        alt={data.title}
+                        loading="lazy"
                     />
-                </div>
+                    <div
+                        style={{
+                            position: "absolute",
+                            top: 15,
+                            left: 10,
+                        }}
+                    >
+                        <Chip
+                            sx={{pointerEvents: "none"}}
+                            color="primary"
+                            label={new Date(data.release_date).getFullYear() || ""}
+                        />
+                    </div>
+                </Link>
             </Box>
             <div
                 style={{

@@ -1,0 +1,22 @@
+.trailer{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 200px;
+    width: 100%;
+    align-items: center;
+    background-color: white;
+    transform: translateX(calc(100% - 50px));
+    transition: all 0.3s ease;
+    display: flex;
+    overflow-x: auto;
+}
+.trailer:hover{
+    transform: translateX(0%);
+}
+
+.trailer .title {
+    font-family: "Poppins";
+    font-weight: 700;
+    transform: rotate(-90deg);
+}

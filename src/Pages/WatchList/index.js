@@ -9,17 +9,10 @@ const Watchlist = () => {
     const auth = sessionId ? true : false;
     const [data, setData] = React.useState([]);
 
-    const getData = () => {
+    const getData = async () => {
         const watchListURL = `https://api.themoviedb.org/3/account/${userInfo.id}/watchlist/movies?api_key=059dbc00809f38f222d2896e2f25d3c3&session_id=${sessionId}&sort_by=created_at.asc&page=1`;
-
-            axios
-                .get(watchListURL)
-                .then((response) => {
-                    setData(response.data.results)
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
+            const response = await axios.get(watchListURL);
+            setData(response.data.results);
     }
 
     React.useEffect(() => {

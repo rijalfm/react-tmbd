@@ -1,6 +1,6 @@
 import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
-import Divider from '@mui/material/Divider';
+import Divider from "@mui/material/Divider";
 import Link from "@mui/material/Link";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -14,6 +14,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteSession } from "../../service/Service";
+import axios from "axios";
 
 const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -58,6 +59,72 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
+const SearchListItem = (props) => {
+    return (
+        <Link
+            sx={{ maxWidth: "100%" }}
+            href={`/detail/${props.id}`}
+            color="inherit"
+            underline="none"
+        >
+            <MenuItem>
+                <Typography sx={{ fontSize: "0.9rem" }} noWrap>
+                    {props.title}
+                </Typography>
+            </MenuItem>
+        </Link>
+    );
+};
+
+const SearchList = (props) => {
+    if (props.data.length > 0) {
+        return (
+            <div
+                style={{
+                    transition: "all 0.3s ease",
+                    overflow: "hidden",
+                    width: "100%",
+                    borderRadius: 5,
+                    position: "absolute",
+                    marginTop: 10,
+                    backgroundColor: "white",
+                    color: "#333",
+                    opacity: props.show ? 1 : 0,
+                    visibility: props.show ? "visible" : "hidden",
+                }}
+            >
+                {props.data.slice(0, 5).map((item, index) => {
+                    return (
+                        <SearchListItem
+                            key={index}
+                            id={item.id}
+                            title={item.title}
+                        />
+                    );
+                })}
+
+                <Link
+                    sx={{ maxWidth: "100%" }}
+                    href={`/search/${props.keyword}`}
+                    color="inherit"
+                    underline="none"
+                >
+                    <MenuItem>
+                        <Typography
+                            sx={{ fontSize: "0.9rem", fontWeight: "bold" }}
+                            noWrap
+                        >
+                            <i>Load More...</i>
+                        </Typography>
+                    </MenuItem>
+                </Link>
+            </div>
+        );
+    }
+
+    return (<div></div>)
+};
+
 export default function Navbar(props) {
     const { login } = props;
     const [scrolled, setScrolled] = React.useState(false);
@@ -65,6 +132,10 @@ export default function Navbar(props) {
     const dispatch = useDispatch();
     const auth = sessionId || false;
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [searchResult, setSearchResult] = React.useState(false);
+    const [keyword, setKeyword] = React.useState("");
+    const [data, setData] = React.useState([]);
+    const apiKey = "059dbc00809f38f222d2896e2f25d3c3";
 
     const handleScroll = () => {
         const offset = window.scrollY;
@@ -80,9 +151,23 @@ export default function Navbar(props) {
     };
 
     const handleLogout = () => {
-        deleteSession(dispatch, {session_id: sessionId});
-        handleClose()
-    }
+        deleteSession(dispatch, { session_id: sessionId });
+        handleClose();
+    };
+
+    const searchMovie = async (event) => {
+        let query = event.target.value;
+        query = query.replaceAll(" ", "%20");
+        setKeyword(query);
+        const searchURL = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${query}&page=1`;
+        try {
+            const response = await axios.get(searchURL);
+            setData(response.data.results);
+        } catch (error) {
+            setData([]);
+            console.error(error);
+        }
+    };
 
     React.useEffect(() => {
         window.onscroll = () => {
@@ -118,8 +203,16 @@ export default function Navbar(props) {
                             <SearchIcon />
                         </SearchIconWrapper>
                         <StyledInputBase
+                            onFocus={() => setSearchResult(true)}
+                            onBlur={() => setSearchResult(false)}
+                            onChange={searchMovie}
                             placeholder="Search…"
                             inputProps={{ "aria-label": "search" }}
+                        />
+                        <SearchList
+                            keyword={keyword}
+                            data={data}
+                            show={searchResult}
                         />
                     </Search>
                     {auth ? (
@@ -133,10 +226,13 @@ export default function Navbar(props) {
                                 onClick={handleMenu}
                                 color="inherit"
                                 startIcon={<AccountCircle />}
-                                sx={{borderRadius:50}}
+                                sx={{ borderRadius: 50 }}
                             >
-                                
-                                <Typography sx={{ml:1, textTransform:"none"}}>{userInfo.username}</Typography>
+                                <Typography
+                                    sx={{ ml: 1, textTransform: "none" }}
+                                >
+                                    {userInfo.username}
+                                </Typography>
                             </Button>
                             <Menu
                                 sx={{ mt: 6 }}
@@ -154,25 +250,44 @@ export default function Navbar(props) {
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                             >
-                                <MenuItem sx={{pt:0,pb:0}} onClick={handleClose}>
-                                    <Link href="/" color="inherit" underline="none">
+                                <MenuItem
+                                    sx={{ pt: 0, pb: 0 }}
+                                    onClick={handleClose}
+                                >
+                                    <Link
+                                        href="/"
+                                        color="inherit"
+                                        underline="none"
+                                    >
                                         Home
                                     </Link>
                                 </MenuItem>
-                                <MenuItem sx={{pt:0,pb:0}} onClick={handleClose}>
-                                    <Link href="/watchlist" color="inherit" underline="none">
+                                <MenuItem
+                                    sx={{ pt: 0, pb: 0 }}
+                                    onClick={handleClose}
+                                >
+                                    <Link
+                                        href="/watchlist"
+                                        color="inherit"
+                                        underline="none"
+                                    >
                                         Watchlist
                                     </Link>
                                 </MenuItem>
                                 <Divider />
-                                <MenuItem sx={{pt:0,pb:0}} onClick={handleLogout}>
+                                <MenuItem
+                                    sx={{ pt: 0, pb: 0 }}
+                                    onClick={handleLogout}
+                                >
                                     <Link underline="none" color="inherit">
                                         Logout
                                     </Link>
                                 </MenuItem>
                             </Menu>
                         </div>
-                    ) : login }
+                    ) : (
+                        login
+                    )}
                 </Toolbar>
             </AppBar>
         </Box>

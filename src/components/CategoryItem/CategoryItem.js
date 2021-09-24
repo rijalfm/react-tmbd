@@ -26,7 +26,7 @@ const CategoryItem = (props) => {
                     fontWeight: "200"
                 }}
                 color="warning"
-                href="#"
+                href={`/genre/${name.toLowerCase()}`}
             >
                 {name}
             </Button>
