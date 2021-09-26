@@ -1,6 +1,7 @@
 import React from "react";
-import { Typography, Box, Stack, Chip } from "@mui/material";
-import { useParams } from "react-router-dom";
+import { Typography, Box, Stack, Chip, Button } from "@mui/material";
+import HomeIcon from '@mui/icons-material/Home';
+import { useParams, useHistory } from "react-router-dom";
 import Side from "../../components/Side/Side";
 import axios from "axios";
 
@@ -24,21 +25,23 @@ const convertDuration = (duration) => {
     return `${hours} hrs ${minutes} mins`;
 };
 
-const apiKey = "059dbc00809f38f222d2896e2f25d3c3";
 
 const Detail = () => {
     const { movieId } = useParams();
+    const history = useHistory();
     const [detail, setDetail] = React.useState(null);
     const [cast, setCast] = React.useState([]);
     const [video, setVideo] = React.useState([]);
     const baseLogoImgURL = "https://www.themoviedb.org/t/p/w300";
     const baseBackdropImgURL =
-        "https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces";
-    const detailURL = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}`;
-    const creditURL = `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}`;
-    const videoURL = `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}`;
-
-    const getMovieDetail = async () => {
+    "https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces";
+    
+    const getMovieDetail = async (id) => {
+        const apiKey = "059dbc00809f38f222d2896e2f25d3c3";
+        const detailURL = `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`;
+        const creditURL = `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${apiKey}`;
+        const videoURL = `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apiKey}`;
+        
         try {
             const responseDetail = await axios.get(detailURL);
             const responseCredit = await axios.get(creditURL);
@@ -53,8 +56,8 @@ const Detail = () => {
     };
 
     React.useEffect(() => {
-        getMovieDetail();
-    }, []);
+        getMovieDetail(movieId);
+    }, [movieId]);
 
     if (detail) {
         return (
@@ -89,9 +92,11 @@ const Detail = () => {
                             pt: 10,
                         }}
                     >
+                        <Button variant="outlined" color="error" onClick={() => history.push("/")} startIcon={<HomeIcon />}>Home</Button>
                         <Typography
                             sx={{
-                                mb: 2,
+                                mt: 2,
+                                mb: 0,
                                 fontFamily: "Poppins",
                                 color: "white",
                                 fontWeight: 700,

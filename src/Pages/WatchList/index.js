@@ -67,7 +67,7 @@ const Watchlist = () => {
                     width: "100%",
                     height: "30vh",
                     backgroundImage:
-                        "url(https://www.countryandtownhouse.co.uk/wp-content/uploads/2018/03/GettyImages-869302366.jpg)",
+                        `url(${process.env.PUBLIC_URL}/img/watchlist.jpg)`,
                     backgroundSize: "cover",
                     backgroundPosition: "center center",
                     overflow: "hidden",

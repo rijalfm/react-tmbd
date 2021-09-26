@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "@mui/material/styles";
-import { Chip, Box, Typography, Rating, Link } from "@mui/material";
+import { Chip, Box, Typography, Rating } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const baseImgURL = "https://www.themoviedb.org/t/p/w300_and_h450_bestv2";
 const paperWidth = 250;
@@ -37,10 +38,10 @@ const MovieItem = (props) => {
     return (
         <div style={{ ...style }}>
             <Box sx={cardStyle}>
-                <Link href={`/detail/${data.id}`}>
+                <Link to={`/detail/${data.id}`}>
                     <img
                         style={{ width: "100%", height: "auto" }}
-                        src={data.poster_path ? baseImgURL + data.poster_path : ""}
+                        src={data.poster_path ? baseImgURL + data.poster_path : "https://dummyimage.com/300x450/7d7d7d/b5b5b5.jpg&text=No+Image"}
                         alt={data.title}
                         loading="lazy"
                     />
@@ -54,7 +55,7 @@ const MovieItem = (props) => {
                         <Chip
                             sx={{pointerEvents: "none"}}
                             color="primary"
-                            label={new Date(data.release_date).getFullYear() || ""}
+                            label={new Date(data.release_date).getFullYear() || "No Data"}
                         />
                     </div>
                 </Link>
@@ -68,9 +69,8 @@ const MovieItem = (props) => {
                 }}
             >
                 <Link
-                    component="button"
-                    underline="none"
-                    sx={{ display: "inline", textAlign: "left" }}
+                    to={`/detail/${data.id}`}
+                    style={{ display: "inline", textAlign: "left", color: "white", textDecoration: "none" }}
                 >
                     <Typography
                         noWrap={false}

@@ -7,6 +7,7 @@ import {
     Stack,
     Chip,
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import { useSelector } from "react-redux";
 
 const convertDate = (date) => {
@@ -61,6 +62,7 @@ function CircularProgressWithLabel(props) {
 const WatchListItem = (props) => {
     const { data } = props;
     const genres = useSelector((state) => state.movieGenre);
+    const theme = useTheme();
 
     return (
         <Paper
@@ -74,15 +76,25 @@ const WatchListItem = (props) => {
             }}
             elevation={3}
         >
-            <Grid container spacing={2} sx={{ height: 250 }}>
-                <Grid item sx={{ height: 250 }}>
+            <Grid container spacing={2} alignItems="strech">
+                <Grid item sx={{ pt: 0, pb: 0, maxHeight: 250 }}>
                     <img
-                        style={{ height: "100%" }}
+                        style={{ height: 250 }}
                         src={baseImgURL + data.poster_path}
                         alt={data.title}
                     />
                 </Grid>
-                <Grid item sx={{ maxWidth: "80%" }}>
+                <Grid
+                    item
+                    sx={{
+                        maxWidth: "80%",
+                        p: 3,
+                        pl: "32px !important",
+                        [theme.breakpoints.down("md")]: {
+                            maxWidth: "100%",
+                        },
+                    }}
+                >
                     <Grid
                         sx={{ mt: 0 }}
                         container

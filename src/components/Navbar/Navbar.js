@@ -1,7 +1,7 @@
 import * as React from "react";
+import { Link, useLocation } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
 import Divider from "@mui/material/Divider";
-import Link from "@mui/material/Link";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -62,10 +62,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const SearchListItem = (props) => {
     return (
         <Link
-            sx={{ maxWidth: "100%" }}
-            href={`/detail/${props.id}`}
-            color="inherit"
-            underline="none"
+            style={{ maxWidth: "100%", color: "#333", textDecoration: "none" }}
+            to={`/detail/${props.id}`}
         >
             <MenuItem>
                 <Typography sx={{ fontSize: "0.9rem" }} noWrap>
@@ -93,7 +91,7 @@ const SearchList = (props) => {
                     visibility: props.show ? "visible" : "hidden",
                 }}
             >
-                {props.data.slice(0, 5).map((item, index) => {
+                {props.data.slice(0, 10).map((item, index) => {
                     return (
                         <SearchListItem
                             key={index}
@@ -104,10 +102,12 @@ const SearchList = (props) => {
                 })}
 
                 <Link
-                    sx={{ maxWidth: "100%" }}
-                    href={`/search/${props.keyword}`}
-                    color="inherit"
-                    underline="none"
+                    style={{
+                        maxWidth: "100%",
+                        color: "#333",
+                        textDecoration: "none",
+                    }}
+                    to={`/search/${props.keyword}`}
                 >
                     <MenuItem>
                         <Typography
@@ -122,19 +122,20 @@ const SearchList = (props) => {
         );
     }
 
-    return (<div></div>)
+    return <div></div>;
 };
 
 export default function Navbar(props) {
     const { login } = props;
     const [scrolled, setScrolled] = React.useState(false);
-    const { sessionId, userInfo } = useSelector((state) => state);
-    const dispatch = useDispatch();
-    const auth = sessionId || false;
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [searchResult, setSearchResult] = React.useState(false);
     const [keyword, setKeyword] = React.useState("");
     const [data, setData] = React.useState([]);
+    const location = useLocation();
+    const { sessionId, userInfo } = useSelector((state) => state);
+    const dispatch = useDispatch();
+    const auth = sessionId || false;
     const apiKey = "059dbc00809f38f222d2896e2f25d3c3";
 
     const handleScroll = () => {
@@ -157,8 +158,8 @@ export default function Navbar(props) {
 
     const searchMovie = async (event) => {
         let query = event.target.value;
-        query = query.replaceAll(" ", "%20");
         setKeyword(query);
+        query = query.replaceAll(" ", "%20");
         const searchURL = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${query}&page=1`;
         try {
             const response = await axios.get(searchURL);
@@ -203,17 +204,29 @@ export default function Navbar(props) {
                             <SearchIcon />
                         </SearchIconWrapper>
                         <StyledInputBase
-                            onFocus={() => setSearchResult(true)}
-                            onBlur={() => setSearchResult(false)}
+                            onFocus={() => {
+                                setSearchResult(true);
+                            }}
+                            onBlur={() => {
+                                setSearchResult(false);
+                                setTimeout(() => {
+                                    setKeyword("");
+                                    setData([]);
+                                }, 100)
+                            }}
                             onChange={searchMovie}
+                            value={keyword}
                             placeholder="Search…"
                             inputProps={{ "aria-label": "search" }}
                         />
-                        <SearchList
-                            keyword={keyword}
-                            data={data}
-                            show={searchResult}
-                        />
+                        <div onClick={() => setData([])}>
+                            <SearchList
+                                location={location}
+                                keyword={keyword}
+                                data={data}
+                                show={searchResult}
+                            />
+                        </div>
                     </Search>
                     {auth ? (
                         <div>
@@ -255,9 +268,11 @@ export default function Navbar(props) {
                                     onClick={handleClose}
                                 >
                                     <Link
-                                        href="/"
-                                        color="inherit"
-                                        underline="none"
+                                        style={{
+                                            color: "#333",
+                                            textDecoration: "none",
+                                        }}
+                                        to="/"
                                     >
                                         Home
                                     </Link>
@@ -267,9 +282,11 @@ export default function Navbar(props) {
                                     onClick={handleClose}
                                 >
                                     <Link
-                                        href="/watchlist"
-                                        color="inherit"
-                                        underline="none"
+                                        style={{
+                                            color: "#333",
+                                            textDecoration: "none",
+                                        }}
+                                        to="/watchlist"
                                     >
                                         Watchlist
                                     </Link>
@@ -279,9 +296,7 @@ export default function Navbar(props) {
                                     sx={{ pt: 0, pb: 0 }}
                                     onClick={handleLogout}
                                 >
-                                    <Link underline="none" color="inherit">
-                                        Logout
-                                    </Link>
+                                    Logout
                                 </MenuItem>
                             </Menu>
                         </div>

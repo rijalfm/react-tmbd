@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Home from "./Pages/Home";
 import WatchList from "./Pages/WatchList";
 import Detail from "./Pages/Detail";
+import Search from "./Pages/Search";
 import {
     BrowserRouter as Router,
     Switch,
@@ -24,6 +25,9 @@ const App = () => {
                     </Route>
                     <Route path="/detail/:movieId">
                         <Detail />
+                    </Route>
+                    <Route path="/search/:query">
+                        <Search />
                     </Route>
                 </Switch>
             </Router>
